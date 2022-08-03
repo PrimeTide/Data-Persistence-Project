@@ -11,6 +11,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text BestScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -66,6 +67,8 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+        
+        CheckHighScore();
     }
 
     public void GameOver()
@@ -73,4 +76,22 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
+
+    void CheckHighScore()
+    {
+        if(DataManager.Instance != null)
+        {
+            if(m_Points > DataManager.Instance.bestScore)
+            {
+                BestScoreText.text ="Highscore: " + m_Points + " Set By: " + DataManager.Instance.currentPlayer;
+                DataManager.Instance.bestScore = m_Points;
+            }
+        }
+        else
+        {
+            BestScoreText.text = "Local Highscore: " + m_Points;
+        }
+    }
+
+   
 }
